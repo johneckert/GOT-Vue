@@ -2,7 +2,7 @@
   <div>
     <div class="chart">
       <bar-chart
-        :dataModel='barChartData'
+        :dataModel='byGender'
         propID='gender-bar-chart'
         metric='Last Sale Price'
         title='Deaths By Gender'
@@ -12,13 +12,19 @@
 </template>
 
 <script>
+import axios from "axios";
 import { D3BarChart } from "jscatalyst";
 
 export default {
-  data: function() {
+  data() {
     return {
-      barChartData: [{ x: "Male", y: 60 }, { x: "Female", y: 30 }]
+      byGender: []
     };
+  },
+  mounted() {
+    axios.get("http://localhost:3000/characters/gender").then(response => {
+      this.byGender = response.data;
+    });
   },
   components: {
     "bar-chart": D3BarChart

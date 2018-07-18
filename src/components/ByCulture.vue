@@ -2,7 +2,7 @@
   <div>
     <div class="chart">
       <bar-chart
-        :dataModel='barChartData'
+        :dataModel='byCulture'
         propID='culture-bar-chart'
         metric='Last Sale Price'
         title='Deaths By Culture'
@@ -12,17 +12,19 @@
 </template>
 
 <script>
+import axios from "axios";
 import { D3BarChart } from "jscatalyst";
 
 export default {
   data: function() {
     return {
-      barChartData: [
-        { x: "Targaryen", y: 0.5 },
-        { x: "Northmen", y: 0.7 },
-        { x: "Ironborn", y: 0.3 }
-      ]
+      byCulture: []
     };
+  },
+  mounted() {
+    axios.get("http://localhost:3000/characters/culture").then(response => {
+      this.byCulture = response.data;
+    });
   },
   components: {
     "bar-chart": D3BarChart
